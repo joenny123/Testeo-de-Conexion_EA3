@@ -1,6 +1,10 @@
 // importamos las librerías necesarias para la interfaz gráfica
 import javax.swing.*; 
 import java.awt.*;
+// importamos las librerías necesarias para la conexión a la base de datos
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class ConexionTester extends JFrame {
 
@@ -54,13 +58,27 @@ public class ConexionTester extends JFrame {
         JScrollPane scroll = new JScrollPane(txtResultado);
 
         // Acción del botón (temporal)
-        btnProbarConexion.addActionListener(e -> { // Acción temporal para mostrar un mensaje de éxito
-            txtResultado.setForeground(Color.GREEN); 
-            txtResultado.setText(
-                "La interfaz funciona correctamente.\n" +
-                "La conexión JDBC se implementará en el siguiente paso."
-            );
-        });
+       btnProbarConexion.addActionListener(e -> { // Acción al hacer clic en el botón
+
+    String url = txtUrl.getText();
+
+   try (Connection conexion = DriverManager.getConnection(url)) { // Intentamos establecer la conexión
+
+    if (conexion != null && !conexion.isClosed()) {
+        txtResultado.setForeground(Color.GREEN);
+        txtResultado.setText("¡Conexión establecida correctamente con SQLite!");
+    }
+
+    } catch (SQLException ex) { // Capturamos cualquier excepción SQL que ocurra durante la conexión
+
+        txtResultado.setForeground(Color.RED);
+        txtResultado.setText(
+            "Fallo de conexión.\n" + ex.getMessage()
+        );
+
+    }
+
+});
 
         // Organización de los paneles
         panelPrincipal.add(panelCampos, BorderLayout.NORTH); // Campos en la parte superior
