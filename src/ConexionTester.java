@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+// Creación de interfaz
+
 public class ConexionTester extends JFrame {
 
     // Componentes o atributos de nuestra interfaz
@@ -57,11 +59,13 @@ public class ConexionTester extends JFrame {
 
         JScrollPane scroll = new JScrollPane(txtResultado);
 
-        // Acción del botón (temporal)
+       // Acción del botón para probar la conexión entre la aplicación y la base de datos SQLite
        
 btnProbarConexion.addActionListener(e -> { // Acción al hacer clic en el botón
 
     String url = txtUrl.getText().trim(); // Obtenemos la URL de conexión ingresada por el usuario
+
+    // aplicación de try-catch-resources para manejar la conexión a la base de datos y capturar posibles excepciones cerrar automáticamente la conexión al finalizar el bloque try
 
     try {
         // Cargar el controlador JDBC de SQLite
