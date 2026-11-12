@@ -1,17 +1,20 @@
 
+# Archivos generados por Maven
+target/
+
 # Archivos compilados de Java
 *.class
 
-# Carpetas de compilación
-bin/
-target/
+# Base de datos local de SQLite
+inventario.db
 
-# Archivos temporales del sistema
+# Archivos de configuración local de VS Code y Eclipse
+.vscode/
+.settings/
+.classpath
+.project
+
+# Archivos del sistema
 .DS_Store
 Thumbs.db
 
-# Configuraciones personales de Visual Studio Code
-.vscode/
-
-# Archivos de configuración locales
-*.log

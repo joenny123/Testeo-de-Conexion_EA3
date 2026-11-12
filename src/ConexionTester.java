@@ -58,27 +58,42 @@ public class ConexionTester extends JFrame {
         JScrollPane scroll = new JScrollPane(txtResultado);
 
         // Acción del botón (temporal)
-       btnProbarConexion.addActionListener(e -> { // Acción al hacer clic en el botón
+       
+btnProbarConexion.addActionListener(e -> { // Acción al hacer clic en el botón
 
-    String url = txtUrl.getText();
+    String url = txtUrl.getText().trim(); // Obtenemos la URL de conexión ingresada por el usuario
 
-   try (Connection conexion = DriverManager.getConnection(url)) { // Intentamos establecer la conexión
+    try {
+        // Cargar el controlador JDBC de SQLite
+        Class.forName("org.sqlite.JDBC");
 
-    if (conexion != null && !conexion.isClosed()) {
-        txtResultado.setForeground(Color.GREEN);
-        txtResultado.setText("¡Conexión establecida correctamente con SQLite!");
-    }
+        // Intentar establecer la conexión
+        try (Connection conexion = DriverManager.getConnection(url)) {
 
-    } catch (SQLException ex) { // Capturamos cualquier excepción SQL que ocurra durante la conexión
+            if (conexion.isValid(2)) {
+                txtResultado.setForeground(Color.GREEN.darker());
+                txtResultado.setText(
+                    "¡Conexión establecida correctamente con SQLite!"
+                );
+            }
+        }
+
+    } catch (ClassNotFoundException ex) { // Captura la excepción si no se encuentra el controlador JDBC
+
+        txtResultado.setForeground(Color.RED);
+        txtResultado.setText(
+            "No se encontró el controlador JDBC.\n" + ex.getMessage()
+        );
+
+    } catch (SQLException ex) { // Captura la excepción si ocurre un error al intentar conectarse a la base de datos
 
         txtResultado.setForeground(Color.RED);
         txtResultado.setText(
             "Fallo de conexión.\n" + ex.getMessage()
         );
-
     }
-
 });
+
 
         // Organización de los paneles
         panelPrincipal.add(panelCampos, BorderLayout.NORTH); // Campos en la parte superior
